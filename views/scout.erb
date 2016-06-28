@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html ng-app='app' manifest="scout/scout.appcache">
+  <head>
+    <title>Scout</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel='stylesheet' type='text/css' href='scout/style.css' />
+  </head>
+
+  <body ng-controller="AppCtrl">
+    <script src='/jquery.min.js'></script>
+    <script src='/angular.min.js'></script>
+    <script src='/angular-route.min.js'></script>    
+    <script src='/angular-cookies.min.js'></script>    
+    <script src='scout/app.js'></script>
+
+    <div class='content'>
+      <div style='display: inline-block;'>
+        <ul class='dataList'>
+          <li ng-class="{'strike': !matches.length}">
+            Matches <span class='dataExample' ng-if='matches.length'>{{matches.length}} matches</span>
+          </li>
+          <li ng-class="{'strike': !eventCode}">
+            Event Code <span class='dataExample' ng-if='eventCode'>{{eventCode}}</span>
+          </li>
+          <li ng-class="{'strike': !scoutSide}">
+            Scouting Side <span class='dataExample' ng-if='scoutSide'>{{scoutSide}}</span>
+          </li>
+        </ul>
+
+        <form ng-submit='getMatches()'>
+          <input type='text' id='eventCode' ng-model='_eventCode' size='4'></input>
+          <select ng-model='_scoutSide'>
+            <option val='Red1'>Red1</option>
+            <option val='Red2'>Red2</option>
+            <option val='Red3'>Red3</option>
+            <option val='Blue1'>Blue1</option>
+            <option val='Blue2'>Blue2</option>
+            <option val='Blue3'>Blue3</option>
+          </select>
+          <button type='submit' ng-hide='updating'>Select</button>
+        </form>
+      </div>
+      <div style='display: inline-block; height: 120px; width: 200px;'>
+        <section id='matchListDiv'>
+          <table>
+            <tr ng-repeat='(i, match) in matches' ng-class="{selected: i==currMatch}" ng-click='setCurrMatch(i)'>
+              <td>
+                <span ng-if="scoutedMatches[match[0]]=='s'">&uparrow;</span>
+                {{match[0]}}
+              </td>
+              <td>{{match[1]}}</td>
+              <td><input type='checkbox' readonly disabled ng-checked="scoutedMatches[match[0]]"/></td>
+            </tr>
+          </table>
+        </section>
+        <nav style='text-align: center; width: 200px;'>
+          <button class='iconButton' ng-click='setCurrMatch(0)'>|&lt;</button>
+          <button class='iconButton' ng-click='setCurrMatch(currMatch-1)'>&lt;</button>
+          <button class='iconButton' ng-click='setCurrMatch(currMatch+1)'>&gt;</button>
+          <button class='iconButton' ng-click='setCurrMatch(matches.length-1)'>&gt;|</button>
+        </nav>
+      </div>
+
+      <nav style='margin-top: 1em;'>
+        <span class='tab'
+          ng-class="{selected:currTab=='pit'}"
+          ng-click='setTab("pit")'
+          >
+          Pit
+        </span>
+        <span class='tab'
+          ng-class="{selected:currTab=='match'}"
+          ng-click='setTab("match")'
+          >
+          Match
+        </span>
+        <span class='tab'
+          ng-class="{selected:currTab=='data'}"
+          ng-click='setTab("data")'
+          >
+          Data
+        </span>
+        <span class='tab'
+          ng-class="{selected:currTab=='events'}"
+          ng-if='events' ng-click='setTab("events")'
+          >
+          Events
+        </span>
+        <span class='tab'
+          ng-class="{selected:currTab=='teams'}"
+          ng-if='teams.length' ng-click='setTab("teams")'
+          >
+          Teams
+        </span>
+      </nav>
+
+      <div class='scoutcontainer' ng-include="'/scout/tab_'+currTab+'.html'">
+      </div>
+    </div>
+
+    <div ng-include="'scout/_online.html'"></div>
+    <div class='banner team' label='{{scoutSide}}'>
+      {{scoutSide}}
+      <div ng-if='currTab == "match"'>
+        {{matches[currMatch].join(" ")}}
+      </div>
+      <div ng-if='currTab == "pit"'>
+        Team {{pitQueue[currTeam]}}
+      </div>
+
+    </div>
+
+    <div class='notifications'>
+      <div class='notification' ng-repeat='note in notifications' ng-class="{warn:note.warn}">
+        {{note.msg}}
+      </div>
+    </div>
+    
+    <img id='halffieldimg' src='halffield.png' style='display: none; position: fixed; top: -9999; left: -9999;' />
+    <img id='halffield2img' src='halffield2.png' style='display: none; position: fixed; top: -9999; left: -9999;' />
+
+    <div style='width: 100%; text-align: center;'>v0.1.16</div>
+
+
+  </body>
+</html>

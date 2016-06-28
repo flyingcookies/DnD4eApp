@@ -1,0 +1,282 @@
+<h1>{{matches[currMatch].join(' Team ')}}</h1>
+<h2 ng-if="scoutedMatches[matches[currMatch][0]]=='s'">Uploaded</h2>
+
+<button ng-click='saveMatch()'>Save</button>
+<button ng-click='setCurrMatch(currMatch+1)'>Next Match</button>
+<button ng-click='clearMatch(currMatch)'>Clear Match</button>
+<button ng-if="scoutedMatches[matches[currMatch][0]]!='s'" ng-click='sendMatch(matches[currMatch][0])'>Send Match</button>
+
+
+<h3>Defenses Against</h3>
+
+<div class='scoutdivider'>
+  <section>
+    <article ng-repeat='i in [1,2,3,4,5]'>
+      <label for='d_defense{{i}}'>Defense {{i}}</label>
+      <select ng-model='scout.defenses[i]' id='d_defense{{i}}'>
+        <option value='false' selected="selected">None</option>
+        <option value='port'>Portcullis</option>
+        <option value='cheval'>Cheval de Frise</option>
+        <option value='ramp'>Ramparts</option>
+        <option value='moat'>Moat</option>
+        <option value='sally'>Sally Port</option>
+        <option value='draw'>Draw Bridge</option>
+        <option value='rock'>Rock Wall</option>
+        <option value='rough'>Rough Terrain</option>
+        <option value='low'>Low Bar</option>
+      </select>
+    </article>
+  </section>
+  <section>
+    <img ng-src='halffield{{(flipField?"2":"")}}.png' ng-click='toggleField()' style='width: 100px; height: 100px; display: inline-block;'  />
+    <div style='width: 70px; display: inline-block; vertical-align: top;'>
+      Click to Rotate
+    </div>
+  </section>
+</div>
+
+<hr/>
+
+<h3>Autonomous</h3>
+
+<div class='scoutdivider'>
+  <section>
+    <input type='checkbox' ng-model='scout.auto.ball' id='startball'/>
+    <label for='startball'>Starts with Ball</label><br/>
+
+    <input type='checkbox' ng-model='scout.auto.drop' id='dropball'/>
+    <label for='dropball'>Drops Ball</label><br/>
+
+    <input type='checkbox' ng-model='scout.auto.low' id='autoShootL'/>
+    <label for='autoShootL'>Low Goal</label><br/>
+
+    <input type='checkbox' ng-model='scout.auto.high' id='autoShootH'/>
+    <label for='autoShootH'>High Goal</label><br/>
+
+    <input type='checkbox' ng-model='scout.auto.hmiss' id='autoShootM'/>
+    <label for='autoShootM'>High Miss</label><br/>
+
+    <input type='checkbox' ng-model='scout.auto.fail' id='autofail'/>
+    <label for='autofail'>Program Failed</label><br/>
+
+    <input type='checkbox' ng-model='scout.auto.crossed' id='madedefense'/>
+    <label for='madedefense'>Crossed Defense</label><br/>
+
+    <select ng-model='scout.auto.defense'>
+      <option value='false' selected="selected">None</option>
+      <option value='port'>Portcullis</option>
+      <option value='cheval'>Cheval de Frise</option>
+      <option value='ramp'>Ramparts</option>
+      <option value='moat'>Moat</option>
+      <option value='sally'>Sally Port</option>
+      <option value='draw'>Draw Bridge</option>
+      <option value='rock'>Rock Wall</option>
+      <option value='rough'>Rough Terrain</option>
+      <option value='low'>Low Bar</option>
+    </select><br/>
+
+    <input type='checkbox' ng-model='scout.auto.outerworks' id='outerworks'/>
+    <label for='outerworks'>Reached Outerworks</label><br/>
+
+  </section>
+  <textarea style="width: 100%; height: 100%; box-sizing: border-box;" ng-model='scout.auto.comments' placeholder='Auto Comments'></textarea>
+</div>
+
+<hr/>
+
+<h3>Teleoperated</h3>
+
+<div class='scoutdivider'>
+  <section>
+    <table>
+      <tr>
+        <th>
+          Type
+        </th>
+        <th>
+          Succeed
+        </th>
+        <th>
+          Total
+        </th>
+        <th>
+          History
+        </th>
+                
+      </tr>
+      <tr ng-repeat='i in [1,2,3,4,5]'>
+        <td class='label' style='font-weight: bold;'>
+          <span ng-if='!scout.defenses[i]'>Defense {{i}}</span>
+          {{scout.defenses[i]}}
+        </td>
+        <td>
+          <button class='iconButton' ng-click='attempt(i, 1)'>&check;</button>
+          <button class='iconButton' ng-click='attempt(i, 0)'>&cross;</button>
+          <button class='iconButton' ng-click='attempt(i, -1)'>&#9760;</button>
+          <button class='iconButton' ng-click='removeAttempt(i, scout.defenes[i].length-1)'>-</button>
+        </td>
+        <td style='text-align: center;'>
+          {{scout.tele.defenses[i].length}}
+        </td>
+        <td>
+          <span ng-repeat="(j, try) in lastItems(i, 3)">
+            <button class='iconButton' ng-click='removeAttempt(i, j)'>
+              {{try == '1' ? '&check;' : try == '-1' ? '&#9760;' : '&cross;'}}
+            </button>
+          </span>
+        </td>
+      </tr>
+    </table>
+  </section>
+  <section>
+  </section>
+</div>
+
+
+<div class='scoutdivider'>
+  <section>
+    <canvas id='fieldcanvas' style='width: 200px; height: 200px;'
+      onclick='renderTouch(event)'
+      ng-click='imageClick($event)'>
+    </canvas>
+  </section>
+  <section style='display: inline-block; float: right;'>
+    <div style='text-align: center; '>
+      <button ng-click="addShot('high')">High</button>
+      <button ng-click="addShot('low')">Low</button>
+      <button ng-click="addShot('hmiss')">HMiss</button>
+    </div>
+    Shots
+    <div style='height: 150px; overflow-y: auto; overflow-x: hidden; background: #fff;'>
+      <table>
+        <tr ng-repeat='(i, shot) in scout.tele.shots'>
+          <td>{{shot.goal}}</td>
+          <td>{{shot.x}},{{shot.y}}</td>
+          <td><button class='iconButton' ng-click='removeShot(i)'>&cross;</button></td>
+        </tr>
+      </table>
+    </div>
+  </section>
+</div>
+<textarea style="width: 100%; height: 100%; box-sizing: border-box;" ng-model='scout.tele.comments' placeholder='Tele Comments'></textarea>
+
+<hr/>
+
+<h3>Ball</h3>
+<div class='scoutdivider'>
+  <section>
+    <input type='number' ng-model='scout.ball.getball' id='pickupball' min="0" style="width:3em"/>
+    <button ng-click="inc('getball')">+</button>
+    <button ng-click="dec('getball')">-</button>
+    <label for='pickupball'>Get Ball</label><br/>
+
+    <input type='number' ng-model='scout.ball.carry' id='carryball' min="0" style="width:3em"/>
+    <button ng-click="inc('carry')">+</button>
+    <button ng-click="dec('carry')">-</button>
+    <label for='carryball'>Carry Ball to Courtyard</label><br/>
+
+    <input type='number' ng-model='scout.ball.drop' id='dropball2' min="0" style="width:3em"/>
+    <button ng-click="inc('drop')">+</button>
+    <button ng-click="dec('drop')">-</button>
+    <label for='dropball2'>Drop Ball</label><br/>
+
+  </section>
+</div>
+
+<textarea style="width: 100%; height: 100%; box-sizing: border-box;" ng-model='scout.ball.comments' placeholder='Ball Comments'></textarea>
+
+<hr/>
+
+<h3>Other</h3>
+
+<div class='scoutdivider'>
+  <section>
+
+    <input type='checkbox' ng-model='scout.other.challenge' id='challenge'/>
+    <label for='challenge'>Challenged</label><br/>
+
+
+    <input type='checkbox' ng-model='scout.other.scalelift' id='scalelift'/>
+    <label for='scalelift'>Scaled</label><br/>
+
+    <input type='checkbox' ng-model='scout.other.scaleliftfail' id='scaleliftfail'/>
+    <label for='scaleliftfail'>Failed Scaling</label><br/>
+
+    <input type='checkbox' ng-model='scout.other.batterroll' id='batterroll'/>
+    <label for='batterroll'>Rolled Off Batter</label><br/>
+    
+    <hr/>
+
+    <input type='checkbox' ng-model='scout.other.foul' id='penaltyother'/>
+    <label for='penaltyother'>Foul</label><br/>
+
+    <input type='checkbox' ng-model='scout.other.tecfoul' id='penaltyother2'/>
+    <label for='penaltyother2'>Technical Foul</label><br/>
+
+    <input type='checkbox' ng-model='scout.other.deadbot' id='deadbot'/>
+    <label for='deadbot'>Dead Bot/Dies</label><br/>
+
+    <input type='checkbox' ng-model='scout.other.connection' id='connection'/>
+    <label for='connection'>Connection Issues</label><br/>
+
+    <input type='checkbox' ng-model='scout.other.noshow' id='noshow'/>
+    <label for='noshow'>No Show</label><br/>
+
+    <hr/>
+
+    <input type='checkbox' ng-model='scout.other.defend' id='defendother'/>
+    <label for='defendother'>Was Defended Against</label><br/>
+
+
+    <input type='checkbox' ng-model='scout.other.defender' id='defenderother'/>
+    <label for='defenderother'>Was a Defender</label><br/>
+
+    <hr/>
+
+    <input type='checkbox' ng-model='scout.other.helpover' id='helpover'/>
+    <label for='helpover'>Helped Robot Over Defense</label><br/>
+    
+    <input type='checkbox' ng-model='scout.other.breach' id='breachother'/>
+    <label for='breachother'>Breach</label><br/>
+
+    <input type='checkbox' ng-model='scout.other.capture' id='captureother'/>
+    <label for='captureother'>Capture</label><br/>
+
+
+
+    
+  </section>
+
+<textarea style="width: 100%; height: 100%; box-sizing: border-box;" ng-model='scout.other.comments' placeholder='Other Comments'></textarea>
+
+</div>
+
+<script>
+
+var canvas = $('#fieldcanvas')
+var ctx = canvas[0].getContext('2d')
+ctx.canvas.width = ctx.canvas.height = 200
+
+function renderTouch(event) {
+  var img = $('#halffield' + (canvas.scope().flipField ? '2' : '' ) + 'img')[0]
+  ctx.drawImage(img, 0, 0, 200, 200);
+
+
+  if(event) {
+    var zoom = $('body').css('zoom')
+    var x = event.offsetX / zoom 
+    var y = event.offsetY / zoom
+    ctx.fillStyle='rgba(255, 255, 255, 0.3)'
+    ctx.strokeStyle='#000'
+    ctx.lineWidth=5
+    ctx.beginPath()
+    ctx.arc(x, y, 10, 0, 6.29)
+    ctx.fill()
+    ctx.stroke()
+    console.log(x, y)
+  }
+}
+renderTouch();
+
+</script>
+

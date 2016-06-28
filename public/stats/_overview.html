@@ -1,0 +1,88 @@
+<section layout='column'>
+  <section layout-gt-md='row' layout='column'>
+    <md-card flex>
+      <md-card-title>
+        <md-card-title-text>
+          <span class="md-headline">Total Data</span>
+          <span class="md-subhead">The amount of teams and matches scouted</span>
+        </md-card-title-text>
+      </md-card-title>
+
+      <md-content layout-padding>
+        <table>
+          <tr>
+            <td class='label'>Teams</td>
+            <td>{{numTeams}}</td>
+          </tr>
+          <tr>
+            <td class='label'>Matches</td>
+            <td>{{numMatches}}</td>
+          </tr>
+        </table>
+
+        <form ng-submit='updateEventCode()'>
+          <md-input-container>
+            <label>Event Code</label>
+            <input type="text" ng-model='eventCode' />
+            <md-button type='submit' class='md-primary md-raised'>
+              Change Event Code
+            </md-button>
+          </md-input-container>
+        </form>
+
+      </md-content>
+    </md-card>
+  </section>
+
+  <section layout-gt-md='row' layout='column'>
+    <md-card flex>
+      <md-card-title>
+        <md-card-title-text>
+          <span class="md-headline">Match Overview</span>
+          <span class="md-subhead">A list of all matches</span>
+        </md-card-title-text>
+      </md-card-title>
+
+      <md-card-content class='matches'>
+        <table>
+        <tr>
+          <th>Match</th>
+          <th>Teams &amp; Score</th>
+        </tr>
+        <tr ng-repeat="match in tournament.matches | filter:teamNumber">
+          <td>{{match.description}}</td>
+          <td>
+            <table>
+              <tr ng-repeat='b in [0, 3]'>
+                <td ng-repeat='i in [0+b,1+b,2+b]' class='team' ng-class='{red: b==0, blue:b==3}'>
+                  <a ng-href='#/team/{{match.Teams[i].teamNumber}}'>
+                    {{match.Teams[i].teamNumber}}
+                  </a>
+                </td>
+                <td class='team' ng-class='{red: b==0, blue:b==3}'>
+                  {{match['score'+(b==0?'Red':'Blue')+"Final"]}}
+                </td>
+              </tr>
+              <tr>
+              </tr>
+            </table>
+          </td>
+        <tr/>
+      </table>
+      </md-card-content>
+    </md-card>
+  </section>
+
+  <!--<section layout-gt-md='row' layout='column'>
+    <md-card flex>
+      <md-card-content>
+        <form enctype="multipart/form-data" action="scoutUpload.php" method="POST">
+          <input type="hidden" name="MAX_FILE_SIZE" value="30000" />
+          <input name='team' type='text' placeholder='team'/><br/>
+          Send this file: <input name="upload" type="file" />
+          <input type="submit" value="Send File" />
+        </form>
+      </md-card-content>
+    </md-card>
+  </section>-->
+</section>

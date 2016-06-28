@@ -1,0 +1,83 @@
+<section layout='column'>
+  <md-card flex>
+    <md-card-title>
+      <md-card-title-text>
+        <span class="md-headline">Three Teams</span>
+        <span class="md-subhead">A comparison of three teamss</span>
+      </md-card-title-text>
+    </md-card-title>
+
+    <md-content layout-padding>
+
+      <div layout='row' layout-padding>
+
+        <md-checkbox ng-model='showhigh'ng-click='showShots()'>
+          High
+        </md-checkbox>
+        <md-checkbox ng-model='showhmiss' ng-click='showShots()'>
+          High Miss
+        </md-checkbox>
+        <md-checkbox ng-model='showlow' ng-click='showShots()'>
+          Low
+        </md-checkbox>
+        <md-checkbox ng-model='showlmiss' ng-click='showShots()'>
+          Low Miss
+        </md-checkbox>
+
+      </div>
+      <div ng-repeat='teamNumber in selectedTeams'>
+  
+        <div layout='row'>
+          <section ng-include="'stats/_defenses.html'">
+          </section>
+
+          <div>
+            <h3>Shots</h3>
+            <section ng-include="'stats/_shots.html'" onload='showShots(teamNumber,1)'>
+            </section>
+          </div>
+        </div>
+
+      </div>
+
+    </md-content>
+  </md-card>
+
+  <md-card flex>
+    <md-card-title>
+      <md-card-title-text>
+        <span class="md-headline">Match Overview</span>
+        <span class="md-subhead">A list of all matches with team {{teamNumber}}</span>
+      </md-card-title-text>
+    </md-card-title>
+
+    <md-card-content class='matches'>
+      <table>
+        <tr>
+          <th>Match</th>
+          <th>Teams &amp; Score</th>
+        </tr>
+        <tr ng-repeat="match in tournament.matches">
+          <td>{{match.description}}</td>
+          <td>
+            <table>
+              <tr ng-repeat='b in [0, 3]'>
+                <td ng-repeat='i in [0+b,1+b,2+b]' class='team' ng-class='{red: b==0, blue:b==3}'>
+                  <a ng-click='select(match, b)'>
+                    {{match.Teams[i].teamNumber}}
+                  </a>
+                </td>
+                <td class='team' ng-class='{red: b==0, blue:b==3}'>
+                  {{match['score'+(b==0?'Red':'Blue')+"Final"]}}
+                </td>
+              </tr>
+              <tr>
+              </tr>
+            </table>
+          </td>
+        <tr/>
+      </table>
+
+    </md-card-content>
+  </md-card>
+</section>

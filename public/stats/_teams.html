@@ -1,0 +1,29 @@
+<section layout='column'>
+  <md-card flex>
+    <md-card-title>
+      <md-card-title-text>
+        <span class="md-headline">Team List</span>
+        <span class="md-subhead">List of all teams</span>
+      </md-card-title-text>
+    </md-card-title>
+
+    <md-content layout-padding>
+
+
+    <table>
+      <tr ng-repeat='team in teamList'>
+        <td>
+          <button ng-click='toggleSelected(team.teamNumber)'>
+            {{selectedTeams.indexOf(team.teamNumber) > -1 ? '&check;' : '&cross;'}}
+          </button>
+        </td>
+        <td class='label' style='font-weight: bold;'>{{team.teamNumber}}</td>
+        <td>{{teams[team.teamNumber].pit.main ? '&check;' : ''}}</td>
+        <td ng-click='setPath("/team/"+team.teamNumber)'>{{team.nameShort}}</td>
+      </tr>
+    </table>
+
+    </md-content>
+  </md-card>
+
+</section>

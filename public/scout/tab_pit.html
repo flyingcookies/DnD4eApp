@@ -1,0 +1,175 @@
+<h1>Team {{pitQueue[currTeam]}}</h1>
+<h2 ng-if="scoutedTeams[pitQueue[currTeam]]=='s'">Uploaded</h2>
+<button ng-click='saveTeam()'>Save</button>
+<button ng-click='setCurrTeam(currTeam-1)'>Prev Team</button>
+<button ng-click='setCurrTeam(currTeam+1)'>Next Team</button>
+<button ng-click='clearTeam(currTeam)'>Clear Team</button>
+
+<h3>Main/Robot</h3>
+<table>
+  <tr>
+    <td class='label'>Team Number</td>
+    <td>
+      <input type='number' readonly ng-model='scout.main.teamNumber' placeholder='Team Number'/>
+    </td>
+  </tr>
+  <tr>
+    <td class='label'>Team Name</td>
+    <td>
+      <input type='text' ng-model='scout.main.teamName' placeholder='Team Name'/>
+    </td>
+  </tr>
+  <tr>
+    <td class='label'>Drive Type</td>
+    <td>
+      <select ng-model='scout.main.driveType'>
+        <option value='tank'>Tank</option>
+        <option value='mecanum'>Mecanum</option>
+        <option value='swerve'>Swerve</option>
+        <option value='holo'>Holonomical</option>
+        <option value='other'>Other</option>
+      </select>
+    </td>
+  </tr>
+  <tr>
+    <td class='label'>Wheel Type</td>
+    <td>
+      <select ng-model='scout.main.wheelType'>
+        <option value='tread'>Tread</option>
+        <option value='solid'>Solid</option>
+        <option value='air'>Air</option>
+        <option value='mecanum'>Mecanum</option>
+        <option value='other'>Other</option>
+      </select>
+    </td>
+  </tr>
+  <tr>
+    <td class='label'>Shooter Type</td>
+    <td>
+      <select ng-model='scout.main.shooterType'>
+        <option value='flywheel'>Flywheel</option>
+        <option value='catapult'>Catapult</option>
+        <option value='other'>Other</option>
+        <option value='other'>nicole.</option>
+        <option value='other'>????</option>
+      </select>
+    </td>
+  </tr>
+
+  <tr>
+    <td class='label'>Wheel Number</td>
+    <td>
+      <input type='number' ng-model='scout.main.wheelNum' placeholder='Wheel Number'/>
+    </td>
+  </tr>
+  <tr>
+    <td class='label'>CIM Number</td>
+    <td>
+      <input type='number' ng-model='scout.main.cimNum' placeholder='CIM Number'/>
+    </td>
+  </tr>
+  <tr>
+    <td class='label'>Max Speed</td>
+    <td>
+      <select ng-model='scout.main.speed'>
+        <option value='immobile'>Immobile</option>
+        <option value='slow'>Slow</option>
+        <option value='medium'>Medium</option>
+        <option value='fast'>Fast</option>
+        <option value='ninja'>Ninja</option>
+      </select>
+    </td>
+  </tr>
+  <tr>
+    <td class='label'>Language</td>
+    <td>
+      <select ng-model='scout.main.language'>
+        <option value='java'>Java</option>
+        <option value='cpp'>C++</option>
+        <option value='labview'>Labview</option>
+        <option value='other'>Other</option>
+      </select>
+    </td>
+  </tr>
+</table>
+
+
+<textarea ng-model='scout.main.comment' placeholder='Comment on Robot'>
+</textarea>
+
+<h3>Teleoperated</h3>
+
+<input type='checkbox' ng-model='scout.tele.lowgoal' id='lowgoal'/>
+<label for='lowgoal'>Low Goal</label><br/>
+
+<input type='checkbox' ng-model='scout.tele.closeshot' id='closeshot'/>
+<label for='closeshot'>Close Shot</label><br/>
+
+<input type='checkbox' ng-model='scout.tele.longshot' id='longshot'/>
+<label for='longshot'>Long Shot</label><br/>
+
+<input type='checkbox' ng-model='scout.tele.blockball' id='blockball'/>
+<label for='blockball'>Can Block</label><br/>
+
+<input type='checkbox' ng-model='scout.tele.pushball' id='pushball'/>
+<label for='pushball'>Can Push</label><br/>
+
+<input type='checkbox' ng-model='scout.tele.pickupball' id='pickupball'/>
+<label for='pickupball'>Can Pickup</label><br/>
+
+<input type='checkbox' ng-model='scout.tele.fastball' id='fastball'/>
+<label for='fastball'>Can Pickup Fast</label><br/>
+
+<input type='checkbox' ng-model='scout.tele.hang' id='hang'/>
+<label for='hang'>Can Hang</label><br/>
+
+<input type='checkbox' ng-model='scout.tele.challenge' id='challenge'/>
+<label for='challenge'>Can Challenge</label><br/>
+
+<input type='checkbox' ng-model='scout.tele.onemanbreach' id='onemanbreach'/>
+<label for='onemanbreach'>Can One-man Breach</label><br/>
+
+<h3>Autonomous</h3>
+
+<input type='checkbox' ng-model='scout.auto.driveforward' id='driveforward'/>
+<label for='driveforward'>Drive Forwards</label><br/>
+
+<input type='checkbox' ng-model='scout.auto.crossdefense' id='crossdefense'/>
+<label for='crossdefense'>Cross Defense</label><br/>
+
+<input type='checkbox' ng-model='scout.auto.shoot' id='autoshoot'/>
+<label for='autoshoot'>Shoot</label><br/>
+
+
+<label for='programs'>Program Number</label><br/>
+<input type='number' id='programs' ng-model='scout.auto.prognum' placeholder=''/>
+
+
+<h3>Abilities</h3>
+
+<input type='checkbox' id='abil_port' ng-model='scout.abilities.port'/>
+<label for='abil_port'>Portcullis</label><br/>
+
+<input type='checkbox' id='abil_cheval' ng-model='scout.abilities.cheval'/>
+<label for='abil_cheval'>Cheval de Frise</label><br/>
+
+<input type='checkbox' id='abil_ramp' ng-model='scout.abilities.ramp'/>
+<label for='abil_ramp'>Ramparts</label><br/>
+
+moat'/>
+<label for='abil_moat'>Moat</label><br/>
+
+<input type='checkbox' id='abil_sally' ng-model='scout.abilities.sally'/>
+<label for='abil_sally'>Sally Port</label><br/>
+
+<input type='checkbox' id='abil_draw' ng-model='scout.abilities.draw'/>
+<label for='abil_draw'>Draw Bridge</label><br/>
+
+<input type='checkbox' id='abil_rock' ng-model='scout.abilities.rock'/>
+<label for='abil_rock'>Rock Wall</label><br/>
+
+<input type='checkbox' id='abil_rough' ng-model='scout.abilities.rough'/>
+<label for='abil_rough'>Rough Terrain</label><br/>
+
+<input type='checkbox' id='abil_low' ng-model='scout.abilities.low'/>
+<label for='abil_low'>Low Bar</label><br/>

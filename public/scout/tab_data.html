@@ -1,0 +1,49 @@
+<p style='width: 300px; margin: auto;'>
+  If you are using an <b>iPhone or an iPad</b>, please note that older matches will be clearned automatically. Make sure you <b>upload frequently</b>. For <b>every device</b>, <b>don't close your browser <u>app</u></b>
+</p><br/>
+
+
+<button ng-click='sendData()'>Send Data</button><br/>
+
+<h3>Data To Be Uploaded</h3>
+<ul>
+  <li ng-repeat='(match, val) in scoutedMatches' ng-if='val==true'>
+    {{match}} <button ng-click='setScouted(match,"s")'>&cross;</button>
+  </li>
+  <li ng-repeat='(team, val) in scoutedTeams' ng-if='val==true'>
+    Team {{team}} <button ng-click='setScoutedTeam(team,"s")'>&cross;</button>
+  </li>
+</ul>
+
+<h3>Already Uploaded Data</h3>
+<ul>
+  <li ng-repeat='(match, val) in scoutedMatches' ng-if='val=="s"'>
+    {{match}} <button ng-click='setScouted(match,true)'>&cross;</button>
+  </li>
+  <li ng-repeat='(team, val) in scoutedTeams' ng-if='val=="s"'>
+    Team {{team}} <button ng-click='setScoutedTeam(team,true)'>&cross;</button>
+  </li>
+</ul>
+
+<h3>Pit Scout Queue (Currently on {{pitQueue[currTeam]}})</h3>
+
+
+<form ng-submit='addQueue(tempTeamNum)'>
+  <input type='number' id='tempTeamNum' ng-model='tempTeamNum' placeholder='Team Number' />
+  <input type='submit' value='&plus;' />
+</form>
+
+
+<ul>
+  <li ng-repeat='(i, team) in pitQueue' ng-class="{selected: i==currTeam}" ng-click='setCurrTeam(i)'>
+    <span ng-if='scoutedTeams[team]==true'>&check;</span>
+    <span ng-if='scoutedTeams[team]=="s"'>&uparrow;</span>
+    {{team}}
+    <button ng-click='removeQueue(i)'>&cross;</button>
+  </li>
+</ul>
+&check; - Scouted<br/>
+&uarr; - Uploaded<br/>
+<br/>
+
+<button ng-click='clearData()' style='background: #faa;'>Clear Scouting Data</button>

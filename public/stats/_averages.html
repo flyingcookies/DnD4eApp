@@ -1,0 +1,111 @@
+<section layout='column'>
+  <md-card flex>
+    <md-card-title>
+      <md-card-title-text>
+        <span class="md-headline">Averages</span>
+        <span class="md-subhead">Sort teams by averages</span>
+      </md-card-title-text>
+    </md-card-title>
+
+
+    <md-tabs layout-fill md-dynamic-height md-border-bottom md-stretch-tabs="always">
+      <md-tab label='Averages'>
+        <md-content layout-padding>
+          <table>
+            <tr>
+              <th style='padding: 0 1em 0 1em;' ng-click='setOrder("teamNumber")'>#</th>
+              <th style='padding: 0 1em 0 1em;' ng-click='setOrder("teamName")'>Name</th>
+              <th style='padding: 0 1em 0 1em;' ng-click='setOrder("avg.high")'>High</th>
+              <th style='padding: 0 1em 0 1em;' ng-click='setOrder("avg.low")'>Low</th>
+              <th style='padding: 0 1em 0 1em;' ng-click='setOrder("avg.cross")'>Defenses</th>
+              <th style='padding: 0 1em 0 1em;' ng-click='setOrder("avg.breach")'>Breach</th>
+              <th style='padding: 0 1em 0 1em;' ng-click='setOrder("avg.capture")'>Capture</th>
+            </tr>
+            <tr ng-repeat='team in _teams | orderBy:order:reverse'>
+              <td align="center">
+                {{team.teamNumber}}
+              </td>
+              <td ng-click='setPath("/team/"+team.teamNumber)'>
+                {{team.teamName}}
+              </td>
+              <td align="center">
+                {{team.avg.highR}}
+              </td>
+              <td align="center">
+                {{team.avg.low}}
+              </td>
+              <td align="center">
+                {{team.avg.cross}}
+              </td>
+              <td align="center">
+                {{team.avg.breach}}
+              </td>
+              <td align="center">
+                {{team.avg.capture}}
+              </td>
+            </tr>
+          </table>
+        </md-content>
+      </md-tab>
+
+      <md-tab label='Weighted Averages'>
+        <md-content layout-padding>
+          <md-checkbox ng-model='isFriday'>
+            Friday Night
+          </md-checkbox>
+          <md-checkbox ng-checked='deductPoints' ng-click='toggleDeduct()'>
+            Deduct Points
+          </md-checkbox>
+          
+
+          <h3 ng-show='isFriday'>
+            Combined Score: {{combined}}
+          </h3>
+
+          <table>
+            <tr>
+              <th style='padding: 0 1em 0 1em;' ng-click='setOrder("teamNumber")'>#</th>
+              <th style='padding: 0 1em 0 1em;' ng-click='setOrder("teamName")'>Name</th>
+              <th style='padding: 0 1em 0 1em;' ng-click='setOrder("avg.effective")'>Effective Rating</th>
+              <th style='padding: 0 1em 0 1em;' ng-click='setOrder("avg.effectiveauto")' ng-hide='isFriday'>Effective Auto Rating</th>
+              <th style='padding: 0 1em 0 1em;' ng-click='setOrder("avg.effectivetele")' ng-hide='isFriday'>Effective Tele Rating</th>
+              <th style='padding: 0 1em 0 1em;' ng-click='setOrder("avg.effectiveend")' ng-hide='isFriday'>Effective End Rating</th>
+              <th style='padding: 0 1em 0 1em;' ng-click='setOrder("avg.firstround")' ng-show='isFriday'>First Round Rating</th>
+              <th style='padding: 0 1em 0 1em;' ng-click='setOrder("avg.secondround")' ng-show='isFriday'>Second Round Rating</th>
+
+            </tr>
+
+            <tr ng-repeat='team in _teams | orderBy:order:reverse' ng-class="{selected:isSelected(team)}">
+              <td align="center">
+                {{team.teamNumber}}
+              </td>
+              <td ng-click='setPath("/team/"+team.teamNumber)'>
+                {{team.teamName}}
+              </td>
+              <td align="center" ng-click='select("effective",team)' ng-class="{selected:selection.effective == team && isFriday}">
+                {{team.avg.effective}}
+              </td>
+              <td align="center" ng-hide='isFriday'>
+                {{team.avg.effectiveauto}}
+              </td>
+              <td align="center" ng-hide='isFriday'>
+                {{team.avg.effectivetele}}
+              </td>
+              <td align="center" ng-hide='isFriday'>
+                {{team.avg.effectiveend}}
+              </td>
+              <td align="center" ng-click='select("first",team)' ng-show='isFriday' ng-class="{selected:selection.first == team}">
+                {{team.avg.firstround}}
+              </td>
+              <td align="center" ng-click='select("second",team)' ng-show='isFriday' ng-class="{selected:selection.second == team}">
+                {{team.avg.secondround}}
+              </td>
+            </tr>
+          </table>
+        </md-content>
+      </md-tab>
+    </md-tabs>
+
+  </md-card>
+
+</section>

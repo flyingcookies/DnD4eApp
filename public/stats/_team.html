@@ -1,0 +1,152 @@
+<section layout='column'>
+  <md-card flex>
+    <md-card-title>
+      <md-card-title-text>
+        <span class="md-headline">{{teamNumber}} - {{teams[teamNumber].meta.nameShort}}</span>
+        <span class="md-subhead">An overview of a team</span>
+      </md-card-title-text>
+    </md-card-title>
+
+    <md-content layout-padding>
+
+      <section ng-include="'stats/_defenses.html'">
+      </section>
+
+      <div layout='row'>
+        <section ng-include="'stats/_shots.html'" onload='showShots(teamNumber,1)'>
+        </section>
+
+        <div layout='column' layout-padding>
+
+          <md-checkbox ng-model='showhigh'ng-click='showShots(teamNumber)'>
+            High
+          </md-checkbox>
+          <md-checkbox ng-model='showhmiss' ng-click='showShots(teamNumber)'>
+            High Miss
+          </md-checkbox>
+          <md-checkbox ng-model='showlow' ng-click='showShots(teamNumber)'>
+            Low
+          </md-checkbox>
+          <md-checkbox ng-model='showlmiss' ng-click='showShots(teamNumber)'>
+            Low Miss
+          </md-checkbox>
+
+        </div>
+      </div>
+
+    </md-content>
+  </md-card>
+
+  <md-card flex>
+    <md-card-title>
+      <md-card-title-text>
+        <span class="md-headline">Match Overview</span>
+        <span class="md-subhead">A list of all matches with team {{teamNumber}}</span>
+      </md-card-title-text>
+    </md-card-title>
+
+    <md-card-content class='matches'>
+
+      <table>
+        <tr>
+          <th>Match</th>
+          <th>Teams &amp; Score</th>
+        </tr>
+        <tr ng-repeat="match in tournament.matches | filter:{Teams: {teamNumber: teamNumber}}">
+          <td>{{match.description}}</td>
+          <td>
+            <table>
+              <tr ng-repeat='b in [0, 3]'>
+                <td ng-repeat='i in [0+b,1+b,2+b]' class='team' ng-class='{red: b==0, blue:b==3, bold: match.Teams[i].teamNumber==teamNumber}'>
+                  <a ng-href='#/team/{{match.Teams[i].teamNumber}}'>
+                    {{match.Teams[i].teamNumber}}
+                  </a>
+                </td>
+                <td class='team' ng-class='{red: b==0, blue:b==3}'>
+                  {{match['score'+(b==0?'Red':'Blue')+"Final"]}}
+                </td>
+              </tr>
+              <tr>
+              </tr>
+            </table>
+          </td>
+        <tr/>
+      </table>
+
+    </md-card-content>
+  </md-card>
+
+  <md-card>
+    <md-toolbar>
+      <div class="md-toolbar-tools">
+        <h2>Pit Scout</h2>
+      </div>
+    </md-toolbar>
+    <md-card-content>
+      <section ng-if='teams[teamNumber].pit' layout='column'>
+        <article ng-repeat='(section, data) in teams[teamNumber].pit' flex>
+          <h4 class='md-title autocap'>{{section}}</h4>
+          <table>
+            <tr ng-repeat='(key, val) in data'>
+              <td class='label'>
+                {{key}}
+              </td>
+              <td>
+                {{val}}
+              </td>
+            </tr>
+          </table>
+        </article>
+      </section>
+      <span ng-if='!teams[teamNumber].pit'>
+        No Pit Scout
+      </span>
+    </md-card-content>
+  </md-card>
+
+  <md-card ng-repeat='match in teams[teamNumber].matches'>
+    <md-toolbar>
+      <div class="md-toolbar-tools">
+        <h2>{{match.match}}</h2>
+      </div>
+    </md-toolbar>
+    <md-content layout-padding>
+      <table>
+        <tr ng-repeat='i in [1,2,3,4,5]'>
+          <td class='label'>{{match.defenses[i]}}</td>
+          <td>
+            <span ng-repeat='t in match.tele.defenses[i] track by $index' ng-switch='t'>
+              <span ng-switch-when="1">
+                &check;
+              </span>
+              <span ng-switch-when="0">
+                &cross;
+              </span>
+              <span ng-switch-when="-1">
+                &#9760;
+              </span>
+            </span>
+          </td>
+        </tr>
+      </table>
+      <canvas id='fieldcanvas{{teamNumber}}_{{$index}}' style='width: 200px; height: 200px;' ng-init='showMatchShots(match, teamNumber+"_"+$index)'>
+      </canvas>
+
+      <div ng-repeat='(section, data) in match | objectOnly' ng-if='section != "tele" && section != "defenses"'>
+        <h3 class='autocap'>
+          {{section}}
+        </h3>
+        <table>
+          <tr ng-repeat='(key,val) in data'>
+            <td class='label'>{{key}}</td>
+            <td>
+              {{val}}
+            </td>
+          </tr>
+        </table>
+      </div>
+
+    </md-content>
+  </md-card>
+
+</section>

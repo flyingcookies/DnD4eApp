@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html ng-app='app' manifest="/stats.appcache" >
+  <head>
+    <title>2468 Analytics</title>
+
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    
+    <link href="angular-material.min.css" rel='stylesheet' type='text/css'>
+    <meta name="theme-color" content="#3f51b5">
+    <link href="icons.css" rel="stylesheet" type='text/css'>
+    
+    <link href='/stats/style.css' rel='stylesheet' type='text/css' />
+  </head>
+
+  <body ng-controller="AppCtrl">
+    <script src='/angular.js'></script>
+    <script src='/angular-route.min.js'></script>
+    <script src="/angular-cookies.min.js"></script>
+    <script src="/angular-animate.min.js"></script>
+    <script src="/angular-aria.min.js"></script>
+    <script src="/angular-messages.min.js"></script>
+    <script src="/angular-material.min.js"></script>
+     
+    <script src='/stats/app.js'></script>
+
+    <div layout='row' layout-fill>
+      <md-sidenav class="md-sidenav-left md-whiteframe-z2" md-component-id="left" md-is-locked-open="$mdMedia('gt-md')">
+        <md-toolbar class='md-tall'>
+          
+        </md-toolbar>
+
+        <md-list>
+          <!-- Default menu -->
+          <md-list-item ng-repeat="item in menu" md-ink-ripple ng-click="setPath(item.path)">
+            <span class='md-list-item-content'>
+              <md-icon>{{item.icon}}</md-icon>
+              <span>{{item.title}}</span>
+            </span>
+          </md-list-item>
+        </md-list>
+      </md-sidenav>
+
+      <div layout='column' layout-fill>
+        <md-toolbar>
+          <div class='md-toolbar-tools'>
+            <md-button class='md-icon-button' hide-gt-md ng-click="toggleSideNav('left')">
+              <md-icon>menu</md-icon>
+            </md-button>
+            <h2>
+              <span>Appreciate Analytics</span>
+            </h2>
+          </div>
+        </md-toolbar>
+        <md-content ng-view class='bg'></md-content>
+      </div>
+    </div>
+
+    <img id='halffieldimg' src='halffield.png' style='display: none; position: fixed; top: -9999; left: -9999;' />
+
+  </body>
+</html>

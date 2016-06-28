@@ -1,0 +1,93 @@
+
+body, html, md-content.bg {
+  background-color: #eee;
+}
+
+td.label {
+  text-align: right;
+  font-weight: bold;
+  text-transform: capitalize;
+}
+
+.autocap {
+  text-transform: capitalize;
+}
+
+.center {
+  text-align: center;
+}
+
+md-content.matches {
+  overflow-x: auto;
+}
+
+.matches table {
+  display: inline-block;
+}
+
+span.team {
+  padding: 0.2em;  
+  font-weight: bold;
+}
+
+span.team:first-child{
+  border-top-left-radius: 0.3em;
+  border-bottom-left-radius: 0.3em;
+}
+
+span.team:last-child{
+  border-top-right-radius: 0.3em;
+  border-bottom-right-radius: 0.3em;
+}
+
+.team.red {
+  background: #FFEBEE;
+  color: #B71C1C;
+}
+
+.team.blue {
+  background: #E3F2FD;
+  color: #0D47A1;
+}
+
+.team.purple {
+  background: #EDE7F6;
+  color: #4A148C;
+}
+
+.bold {
+  font-weight: bold;
+}
+.team.bold {
+  text-decoration: underline;
+}
+
+.team a {
+  color: inherit;
+  text-decoration: none;
+}
+
+td.team {
+  min-width: 2.5em;
+}
+
+table {
+  border-collapse: collapse;
+}
+
+table td.team {
+  padding: 0.2em;
+}
+
+input[type='text'].team {
+  max-width: 2.5em;
+  border-width: 0px;
+}
+
+tr.selected {
+  background: #eee;
+}
+
+td.selected {
+  background: #ccc;
+}

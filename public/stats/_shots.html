@@ -1,0 +1,16 @@
+<div layout='row'>
+  <canvas id='fieldcanvas{{teamNumber}}' style='width: 200px; height: 200px;' >
+  </canvas>
+  <div>
+    <table>
+      <tr>
+        <td class='label'>Average High</td>
+        <td>{{getAvg('high',teamNumber, true)}}</td>
+      </tr>
+      <tr>
+        <td class='label'>Average Low</td>
+        <td>{{getAvg('low',teamNumber, true)}}</td>
+      </tr>
+    </table>
+  </div>
+</div>

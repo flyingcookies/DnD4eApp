@@ -1,0 +1,56 @@
+<h3>Analysis {{teamNumber}}</h3>
+
+<table>
+  <tr>
+    <th>
+      Type
+    </th>
+    <th>
+      Claimed
+    </th>
+    <th>
+      Attempts
+    </th>
+    <th>
+      Stuck
+    </th>
+    <th>
+      Tortuga
+    </th>
+    <th>
+      Opportunities
+    </th>
+    <th>
+      %
+    </th>
+    <th>
+      Times Picked
+    </th>
+  </tr>
+  <tr ng-repeat='(key, defense) in defenses'>
+    <td class='label'>
+      {{defense}}
+    </td>
+    <td align='center'>
+      {{teams[teamNumber].pit.abilities[key] ? '&check;' : '&cross;'}}
+    </td>
+    <td align='center'>
+      {{attempts(teamNumber, key)}}
+    </td>
+    <td align='center'>
+      {{stuck(teamNumber, key)}}
+    </td>
+    <td align='center'>
+      {{tortuga(teamNumber, key)}}
+    </td>
+    <td align='center'>
+      {{opportunities(teamNumber, key)}}
+    </td>
+    <td align='center'>
+      {{percent(teamNumber, key)}}
+    </td>
+    <td align='center'>
+      {{teams[teamNumber].picks[key]}}/{{teams[teamNumber].totalMatches}}
+    </td>
+  </tr>
+</table>

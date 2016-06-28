@@ -1,0 +1,105 @@
+ <md-card flex>
+      <md-card-title>
+        <md-card-title-text>
+          <span class="md-headline">Edit Matches</span>
+          <span class="md-subhead">Add, move, and edit match data</span>
+        </md-card-title-text>
+      </md-card-title>
+
+      <md-card-content>
+        <table>
+          <tr>
+            <th>Add</th>
+            <th>Match</th>
+            <th>Red</th><th></th><th></th>
+            <th>Blue</th><th></th><th></th>
+            <th>Score</th><th></th>
+          </tr>
+          <tr>
+            <td>
+            <md-button class='md-icon-button' ng-click='addRow()'><md-icon>add</md-icon></md-button>
+            </td>
+            <td>
+            <md-menu>
+              <md-button class="md-primary" ng-click="$mdOpenMenu($event)">
+                Quals
+              </md-button>
+              <md-menu-content width="2">
+                <md-menu-item ng-repeat="item in ['Quals', 'Quarters', 'Semis', 'Finals']">
+                  <md-button ng-click="editNewMatchType(item)">
+                    {{item}}
+                  </md-button>
+                </md-menu-item>
+              </md-menu-content>
+            </md-menu>
+            </td>
+            <td class='team red'>
+              <input type="text" class='team red' placeholder="1234">
+            </td>
+            <td class='team red'>
+              <input type="text" class='team red' placeholder="1234">
+            </td>
+            <td class='team red'>
+              <input type="text" class='team red' placeholder="1234">
+            </td>
+            <td class='team blue'>
+              <input type="text" class='team blue' placeholder="1234">
+            </td>
+            <td class='team blue'>
+              <input type="text" class='team blue' placeholder="1234">
+            </td>
+            <td class='team blue'>
+              <input type="text" class='team blue' placeholder="1234">
+            </td>
+            <td class='team red'>
+              <input type="text"  class='team' size="2" placeholder="0">
+            </td>
+            <td class='team blue'>
+              <input type="text" class='team' size="2" placeholder="0">
+            </td>
+          </tr><tr><td><br></td></tr>
+          <tr>
+            <th>Move</th>
+            <th>Match</th>
+            <th>Red</th><th></th><th></th>
+            <th>Blue</th><th></th><th></th>
+            <th>Score</th><th></th>
+          </tr>
+          <tr ng-repeat="data in tournament.matches">
+            <td>
+              <md-button class='md-mini md-primary md-icon-button' ng-click="moveUp(data)">
+                <md-icon>arrow_upward</md-icon>
+              </md-button>
+            </td>
+            <td>  
+            <md-menu>
+              <md-button class="md-primary" ng-click="$mdOpenMenu($event)">
+                 {{data.title}}
+              </md-button>
+              <md-menu-content width="2">
+                <md-menu-item ng-repeat="item in ['Quals', 'Quarters', 'Semis', 'Finals']">
+                  <md-button ng-click="editMatchType(data, item)">
+                    {{item}}
+                  </md-button>
+                </md-menu-item>
+              </md-menu-content>
+            </md-menu>
+
+          <!--
+            <input type="text" value="{{data.title}}" size="4">
+          !-->
+            </td>
+            <td ng-repeat="(id, team) in data.description.li" class='team' ng-class='{red: id<3, blue: id>=3}'>
+                <input type="text" class='team' ng-class='{red: id<3, blue: id>=3}' ng-model="team">
+            </td>
+            <td class='team red'>
+              <input type="text"  class='team' ng-model="data.description.h1[0]" size="2">
+            </td>
+            <td class='team blue'>
+              <input type="text" class='team' ng-model="data.description.h1[1]" size="2">
+            </td>
+          <tr/>
+        </table>
+
+      </md-card-content>
+    </md-card>

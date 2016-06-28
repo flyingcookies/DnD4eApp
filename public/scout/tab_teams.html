@@ -1,0 +1,15 @@
+<table>
+  <tr ng-repeat='team in teams'>
+    <td class='label' style='font-weight: bold;'>{{team.teamNumber}}</td>
+    <td><button class='iconButton' ng-click='addQueue(team.teamNumber)'>+</button></td>
+    <td>{{scoutedTeams[team.teamNumber] ? '&check;' : ''}}</td>
+    <td>{{team.nameShort}}</td>
+  </tr>
+  <!--
+  <tr>
+    <td class='label' style='font-weight: bold;'>8642</td>
+    <td><button ng-click='setTab("doodle")'>+</button></td>
+    <td></td>
+    <td>Appreciate Backwards</td>
+  </tr>-->
+</table>
